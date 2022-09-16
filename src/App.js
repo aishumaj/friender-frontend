@@ -12,11 +12,11 @@ import Loading from "./Loading";
 const GLOBAL_TOKEN = "token";
 
 function App() {
-  
+
   const [token, setToken] = useState(localStorage.getItem(GLOBAL_TOKEN) || null);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   useEffect(function getCurrentUser() {
 
     async function getUser(token) {
@@ -40,7 +40,7 @@ function App() {
   }, [token]);
 
   if(isLoading) return (<Loading />);
-  
+
   async function login({ username, password }) {
     try {
       let tokenData = await FrienderApi.login(username, password);
@@ -50,16 +50,17 @@ function App() {
       console.error("ERROR: ", err);
     }
   }
-  
+
   function logout() {
     setCurrentUser(null);
     setToken(null);
     FrienderApi.token = null;
     localStorage.removeItem(GLOBAL_TOKEN);
   }
-  
+
   async function signup({ username, firstName, password, age, zipCode, bio,
     hobbies, interests, radius, image }) {
+    console.log("Username",username)
     try {
       let tokenData = await FrienderApi.createNewUser(username, firstName, password, age, zipCode, bio,
         hobbies, interests, radius, image);
@@ -69,7 +70,7 @@ function App() {
       console.error("ERROR: ", err);
     }
   }
-  
+
   return (
     <userContext.Provider value={{ currentUser, setCurrentUser }}>
       <div className="App">

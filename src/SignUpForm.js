@@ -43,12 +43,17 @@ function SignUpForm({ register }) {
   /** Call parent function and clear form. */
   function handleSubmit(evt) {
     evt.preventDefault();
-    register(formData);
+    const data = new FormData();
+    for (let key in formData){
+      data.append(key, formData[key])
+    }
+
+    register(data);
     setFormData(initial);
     if(currentUser) navigate("/");
     if(!currentUser) setIsBadLogin(false);
   }
-  
+
    /** Updates state for file input */
    function handleImage(evt) {
     const {name} = evt.target;
@@ -62,7 +67,7 @@ function SignUpForm({ register }) {
   return (
     <div className="signupPage">
       <h3 className="mb-4">Sign Up</h3>
-      <form className="SignUpForm" onSubmit={handleSubmit}>
+      <form className="SignUpForm" onSubmit={handleSubmit} encType="multipart/form-data" action="">
 
         <div className="mb-3">
         <label className="mb-2 label">Username</label>

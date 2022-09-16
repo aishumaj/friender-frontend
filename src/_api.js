@@ -17,7 +17,9 @@ class FrienderApi {
     console.debug("API Call:", endpoint, data, method);
 
     const url = `${BASE_URL}/${endpoint}`;
-    const headers = { Authorization: `Bearer ${FrienderApi.token}` };
+    const headers = { Authorization: `Bearer ${FrienderApi.token}`,
+    'Content-Type': 'application/json, multipart/form-data, application/x-www-form-urlencoded',
+    "Accept": "application/json" };
     const params = (method === "get")
       ? data
       : {};
@@ -30,9 +32,9 @@ class FrienderApi {
       throw Array.isArray(message) ? message : [message];
     }
   }
-  
+
   // Individual API routes
-  
+
     /** Create a new user */
 
     static async createNewUser(username, firstName, password, age, zipCode, bio,
@@ -43,14 +45,14 @@ class FrienderApi {
         "post");
       return res.access_token;
     }
-    
+
   /** Login a user */
-  
+
   static async login(username, password) {
     let res = await this.request("login", { username, password }, "post");
     return res.access_token;
   }
-  
+
   /** Get individual user information */
   static async getUserInfo() {
     let res = await this.request(`profile`);
@@ -62,12 +64,12 @@ class FrienderApi {
   static async updateUserInfo(username, firstName, password, age, zipCode, bio,
       hobbies, interests, radius, image) {
     let res = await this.request(`update`,
-      { username, firstName, password, age, zipCode, bio, hobbies, interests, 
+      { username, firstName, password, age, zipCode, bio, hobbies, interests,
         radius, image },
       "patch");
     return res.user;
   }
-  
+
 }
 
 export default FrienderApi;
